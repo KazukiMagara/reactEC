@@ -1,43 +1,82 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Button } from './button'
 
-const itemList = [
-    {id: 1, material: "鉄", sizeHeight: 20, sizeWidth: 20, sizeLength: 20, weight: 20.00, price: 3000, itemInv: 30},
-    {id: 2, material: "木材", sizeHeight: 1, sizeWidth: 20, sizeLength: 200, weight: 20.00, price: 2000, itemInv: 30},
-    {id: 3, material: "銅", sizeHeight: 0.1, sizeWidth: 30, sizeLength: 300, weight: 20.00, price: 4000, itemInv: 30}
-];
+const ITable = styled.table`
+    margin: 0 auto;
+    width: 60%;
+    border: 1px solid;
+    border-collapse: collapse;
+`
 
-export const ItemTable:  React.FC = () => {
+const Ith = styled.th`
+    border: 1px solid;
+    border-collapse: collapse;
+    background-color: green;
+`
+
+const Itd = styled.td`
+    border: 1px solid;
+    border-collapse: collapse;
+`
+
+interface Item {
+    id: number;
+    material: string;
+    sizeHeight: number;
+    sizeWidth: number;
+    sizeLength: number;
+    weight: number;
+    price: number;
+    itemInv: number;
+}
+
+interface Props {
+    itemList: Item[];
+    cartList: number[];
+    addCart: (itemId: number) => void;
+}
+
+export const ItemTable:  React.FC<Props> = (props) => {
+    const addCart: (itemId:number) => void = (itemId) => {
+        // props.addCart(itemId);
+        console.log("added to Cart : " + itemId);
+    }
+
     return (
         <>
-            <table>
+            <ITable>
                 <thead>
                     <tr>
-                        <th>商品ID</th>
-                        <th>素材</th>
-                        <th>高さ(cm)</th>
-                        <th>幅(cm)</th>
-                        <th>長さ(cm)</th>
-                        <th>重さ(kg)</th>
-                        <th>価格(円)</th>
-                        <th>在庫(個)</th>
+                        <Ith>商品ID</Ith>
+                        <Ith>素材</Ith>
+                        <Ith>高さ(cm)</Ith>
+                        <Ith>幅(cm)</Ith>
+                        <Ith>長さ(cm)</Ith>
+                        <Ith>重さ(kg)</Ith>
+                        <Ith>価格(円)</Ith>
+                        <Ith>在庫(個)</Ith>
+                        <Ith>カート追加</Ith>
                     </tr>
                 </thead>
                 <tbody>
-                    {itemList.map(item => (
+                    {props.itemList.map(item => (
                         <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.material}</td>
-                            <td>{item.sizeHeight}</td>
-                            <td>{item.sizeWidth}</td>
-                            <td>{item.sizeLength}</td>
-                            <td>{item.weight}</td>
-                            <td>{item.price}</td>
-                            <td>{item.itemInv}</td>
+                            <Itd>{item.id}</Itd>
+                            <Itd>{item.material}</Itd>
+                            <Itd>{item.sizeHeight}</Itd>
+                            <Itd>{item.sizeWidth}</Itd>
+                            <Itd>{item.sizeLength}</Itd>
+                            <Itd>{item.weight}</Itd>
+                            <Itd>{item.price}</Itd>
+                            <Itd>{item.itemInv}</Itd>
+                            <Itd>
+                                <Button onClick={() => props.addCart(item.id)}>追加</Button>
+                            </Itd>
                         </tr>
                     ))}
                 </tbody>
-            </table>
+            </ITable>
         </>
     )
 }

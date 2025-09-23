@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const HeaderWrapper = styled.header`
     align-content: center;
@@ -30,7 +31,6 @@ const HeaderControl = styled.div`
 
 interface Props {
     title: string
-    children: React.ReactNode
 }
 
 export const Header: React.FC<Props> = (props) => (
@@ -39,7 +39,12 @@ export const Header: React.FC<Props> = (props) => (
             {props.title}
         </HeaderTitle>
         <HeaderControl>
-            {props.children}
+            <Link to="/itemList">
+                商品一覧
+            </Link>
+            <Link to="/cart">
+                カート
+            </Link>
         </HeaderControl>
     </HeaderWrapper>
 )

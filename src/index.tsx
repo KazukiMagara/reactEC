@@ -2,7 +2,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import styled from 'styled-components'
 import { createGlobalStyle } from 'styled-components'
-import { ItemList } from './pages/itemList'
+import { App } from './pages/App'
 
 const GlobalStyle = createGlobalStyle`
     body * {
@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
 const Main = (
     <>
         <GlobalStyle />
-        <ItemList />
+        <App />
     </>
 )
 

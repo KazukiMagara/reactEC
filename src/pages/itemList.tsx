@@ -1,14 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Header } from '../components/header'
 import { ItemTable } from '../components/itemTable'
-
-const HeaderArea = styled.div`
-    position: fixed;
-    right: 0;
-    top: 0;
-    left: 0;
-`
 
 const ItemArea = styled.div`
     bottom: 0;
@@ -17,17 +9,28 @@ const ItemArea = styled.div`
     right: 0;
     top: 3rem;
 `
+interface Item {
+    id: number;
+    material: string;
+    sizeHeight: number;
+    sizeWidth: number;
+    sizeLength: number;
+    weight: number;
+    price: number;
+    itemInv: number;
+}
 
-export const ItemList:  React.FC = () => {
+interface Props {
+    itemList: Item[];
+    cartList: number[];
+    addCart: (itemId: number) => void;
+}
+
+export const ItemList:  React.FC<Props> = (props) => {
     return (
         <>
-            <HeaderArea>
-                <Header title="ReactEC">
-                    <></>
-                </Header>
-            </HeaderArea>
             <ItemArea>
-                <ItemTable />
+                <ItemTable itemList={props.itemList} cartList={props.cartList} addCart={props.addCart} />
             </ItemArea>
         </>
     )
