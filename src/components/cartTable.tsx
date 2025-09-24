@@ -44,7 +44,7 @@ export const CartTable: React.FC<Props> = (props) => {
     const removeFromCart = (itemId: number) => {
         // setCartList(prev => prev.filter(id => id !== itemId));
         // props.cartList.push(itemId);
-        // props.delete(itemId);
+        props.delete(itemId);
         console.log("delete:" + itemId);
     };
 
@@ -80,7 +80,7 @@ export const CartTable: React.FC<Props> = (props) => {
                                 <input type="number" />
                             </Ctd>
                             <Ctd>
-                                <Button onClick={() => props.delete(item.id)} >削除</Button>
+                                <Button onClick={() => removeFromCart(item.id)} >削除</Button>
                             </Ctd>
                         </tr>
                     ))}

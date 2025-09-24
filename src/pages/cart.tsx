@@ -2,19 +2,16 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { CartTable } from '../components/cartTable';
 import { Button } from '../components/button';
+import { useHistory } from 'react-router-dom';
 
 const CartArea = styled.div`
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 3rem;
+    padding: 2rem;
+    text-align: center;
 `
 
 const CompleteButtonArea = styled.div`
     bottom: 0;
     left: 0;
-    position: fixed;
     right: 0;
     top: 3rem;
 `
@@ -38,14 +35,21 @@ interface Props {
 }
 
 export const Cart : React.FC<Props> = (props) => {
+    const history = useHistory();
+
+    const handleComplete = () => {
+        props.complete(); // カートを空にする（親から渡された関数）
+        history.push("/complete");
+    };
+
     return (
         <>
             <CartArea>
                 <CartTable itemList={props.itemList} cartList={props.cartList} delete={props.delete} />
+                <CompleteButtonArea>
+                    <Button onClick={() => handleComplete()}>購入する</Button>
+                </CompleteButtonArea>
             </CartArea>
-            {/* <CompleteButtonArea>
-                <Button onClick={() => props.complete}>購入する</Button>
-            </CompleteButtonArea> */}
         </>
     )
 }

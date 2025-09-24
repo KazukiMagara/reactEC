@@ -64,6 +64,12 @@ export const App: React.FC = () => {
                 <Route exact path="/cart">
                     <Cart itemList={itemList} cartList={cartList} delete={deleteCart} complete={complete}/>
                 </Route>
+                <Route exact path="/complete">
+                    <div style={{ padding: '2rem' }}>
+                        <h2>ご購入ありがとうございました！</h2>
+                        <p>注文が正常に完了しました。</p>
+                    </div>
+                </Route>
                 <Redirect to="/itemList" path="*" />
             </Router>
         </>
