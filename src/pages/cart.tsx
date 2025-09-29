@@ -5,6 +5,7 @@ import { Button } from '../components/button';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { PurchaseConfirmModal } from '../components/modal/purchaseConfirmModal';
+import { PurchaseFailedModal } from '../components/modal/purchaseFailedModal';
 
 const CartArea = styled.div`
     padding: 2rem;
@@ -46,10 +47,20 @@ interface Props {
 export const Cart : React.FC<Props> = (props) => {
     const history = useHistory();
     const [showModal, setShowModal] = useState(false);
+    const [showFailedModal, setShowFailedModal] = useState(false);
 
     const handleComplete = () => {
-        props.complete(); // カートを空にする（親から渡された関数）
-        history.push("/complete");
+        const isPurchasable = props.cartList.every(cartItem => {
+            const item = props.itemList.find(i => i.id === cartItem.itemId);
+            return item !== undefined && cartItem.itemCnt <= item.itemInv;
+        });
+        if(isPurchasable){
+            props.complete(); // カートを空にする（親から渡された関数）
+            history.push("/complete");
+        }else {
+            setShowModal(false);
+            setShowFailedModal(true);
+        }
     };
 
     return (
@@ -64,6 +75,11 @@ export const Cart : React.FC<Props> = (props) => {
                 <PurchaseConfirmModal
                     completePurchase={() => handleComplete()}
                     onCancel={() => setShowModal(false)}
+                />
+            )}
+            {showFailedModal && (
+                <PurchaseFailedModal
+                    onCancel={() => setShowFailedModal(false)}
                 />
             )}
         </>

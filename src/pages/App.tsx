@@ -35,14 +35,16 @@ interface CartItem {
     itemCnt: number;
 }
 
-const itemList : Item[] = [
+const items : Item[] = [
     {id: 1, material: "鉄", sizeHeight: 20, sizeWidth: 20, sizeLength: 20, weight: 20, price: 3000, itemInv: 30},
     {id: 2, material: "木材", sizeHeight: 1, sizeWidth: 20, sizeLength: 200, weight: 20, price: 2000, itemInv: 30},
     {id: 3, material: "銅", sizeHeight: 0.1, sizeWidth: 30, sizeLength: 300, weight: 20, price: 4000, itemInv: 30}
 ];
 
 export const App: React.FC = () => {
+    const [itemList, setItemList] = useState<Item[]>(items);
     const [cartList, setCartList] = useState<CartItem[]>([]);
+    const [purchaseHistoryList, setPurchaseHistoryList] = useState<CartItem[]>([]);
 
     const addCart = (itemId: number) => {
         setCartList(prevItems => {
@@ -73,7 +75,16 @@ export const App: React.FC = () => {
     }
 
     const complete = () => {
+        cartList.map(cartItem => 
+            setItemList(prev => 
+                prev.map(item =>
+                    item.id === cartItem.itemId ? {...item, itemInv: item.itemInv-cartItem.itemCnt} : item
+                )
+            )
+        );
+        setPurchaseHistoryList(prev => [...prev, ...cartList])
         setCartList([]);
+        console.log(purchaseHistoryList);
     }
 
     return (
