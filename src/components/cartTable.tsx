@@ -21,6 +21,13 @@ const Ctd = styled.td`
     border-collapse: collapse;
 `
 
+const TotalPriceArea = styled.div`
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 3rem;
+`
+
 interface Item {
     id: number;
     material: string;
@@ -32,14 +39,21 @@ interface Item {
     itemInv: number;
 }
 
+interface CartItem {
+    itemId: number;
+    price: number;
+    itemCnt: number;
+}
+
 interface Props {
     itemList: Item[];
-    cartList: number[];
+    cartList: CartItem[];
+    updateItemCnt: (itemId: number, newCount: number) => void
     delete: (itemId: number) => void;
 }
 
 export const CartTable: React.FC<Props> = (props) => {
-    const cartItems = props.itemList.filter(item => props.cartList.includes(item.id));
+    const cartItems = props.itemList.filter(item => props.cartList.some(cart => cart.itemId === item.id));
     
     const removeFromCart = (itemId: number) => {
         // setCartList(prev => prev.filter(id => id !== itemId));
@@ -47,6 +61,10 @@ export const CartTable: React.FC<Props> = (props) => {
         props.delete(itemId);
         console.log("delete:" + itemId);
     };
+
+    const totalPrice = props.cartList.reduce((sum, item) => {
+        return sum + item.price * item.itemCnt;
+    }, 0)
 
     return (
         <>
@@ -77,7 +95,12 @@ export const CartTable: React.FC<Props> = (props) => {
                             <Ctd>{item.price}</Ctd>
                             <Ctd>{item.itemInv}</Ctd>
                             <Ctd>
-                                <input type="number" />
+                                <input 
+                                    type="number" 
+                                    min={1} 
+                                    value={props.cartList.find(cart => cart.itemId === item.id)?.itemCnt ?? 1}
+                                    onChange={(e) => props.updateItemCnt(item.id, Number(e.target.value))}
+                                />
                             </Ctd>
                             <Ctd>
                                 <Button onClick={() => removeFromCart(item.id)} >削除</Button>
@@ -86,6 +109,9 @@ export const CartTable: React.FC<Props> = (props) => {
                     ))}
                 </tbody>
             </CTable>
+            <TotalPriceArea>
+                合計金額:￥{totalPrice.toLocaleString()}
+            </TotalPriceArea>
         </>
     )
 }

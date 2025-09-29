@@ -1,6 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Button } from './button'
+import { AddedCartModal } from './modal/addedCartModal'
+import { useHistory } from "react-router-dom";
+
+const { useState } = React
 
 const ITable = styled.table`
     margin: 0 auto;
@@ -31,16 +35,30 @@ interface Item {
     itemInv: number;
 }
 
+interface CartItem {
+    itemId: number;
+    price: number;
+    itemCnt: number;
+}
+
 interface Props {
     itemList: Item[];
-    cartList: number[];
+    cartList: CartItem[];
     addCart: (itemId: number) => void;
 }
 
 export const ItemTable:  React.FC<Props> = (props) => {
+    const [showModal, setShowModal] = useState(false);
+
     const addCart: (itemId:number) => void = (itemId) => {
-        // props.addCart(itemId);
+        props.addCart(itemId);
         console.log("added to Cart : " + itemId);
+        setShowModal(true);
+    }
+
+    const history = useHistory();
+    const toCart: () => void = () =>{
+        history.push("/cart");
     }
 
     return (
@@ -71,12 +89,18 @@ export const ItemTable:  React.FC<Props> = (props) => {
                             <Itd>{item.price}</Itd>
                             <Itd>{item.itemInv}</Itd>
                             <Itd>
-                                <Button onClick={() => props.addCart(item.id)}>追加</Button>
+                                <Button onClick={() => addCart(item.id)}>追加</Button>
                             </Itd>
                         </tr>
                     ))}
                 </tbody>
             </ITable>
+            {showModal && (
+                <AddedCartModal
+                    continueShopping={() => setShowModal(false)}
+                    toCart={() => toCart()}
+                />
+            )}
         </>
     )
 }

@@ -20,9 +20,15 @@ interface Item {
     itemInv: number;
 }
 
+interface CartItem {
+    itemId: number;
+    price: number;
+    itemCnt: number;
+}
+
 interface Props {
     itemList: Item[];
-    cartList: number[];
+    cartList: CartItem[];
     addCart: (itemId: number) => void;
 }
 
